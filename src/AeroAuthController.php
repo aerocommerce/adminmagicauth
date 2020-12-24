@@ -2,9 +2,11 @@
 
 namespace Aerocargo\Aeroauth;
 
+use Aero\Admin\Models\Admin;
 use Aero\Routing\Controller;
 use Aerocargo\Aeroauth\Domain;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -39,9 +41,23 @@ class AeroAuthController extends Controller
         return response()->redirectTo(route('home'));
     }
 
-    public function verifyAndLogin()
+    public function verifyAndLogin(Request $request)
     {
+        if (!$request->hasValidSignature()) {
+            return abort(401);
+        }
 
+        $whitelistedIps = config('aeroauth')['whitelisted_ips'];
+
+        if (collect($whitelistedIps)->contains(request()->ip())) {
+            $admin = Admin::all()->first();
+
+            Auth::guard(config('aero.admin.auth.defaults.guard'))->login($admin);
+
+            return response()->redirectTo(config('aero.admin.slug'));
+        }
+
+        return abort(401);
     }
 }
 
