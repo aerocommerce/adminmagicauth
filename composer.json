@@ -1,0 +1,20 @@
+{
+    "name": "aerocargo/aeroauth",
+    "description": "",
+    "require": {
+        "php": "^7.2",
+        "aerocommerce/core": "^0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aerocargo\\Aeroauth\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aerocargo\\Aeroauth\\ServiceProvider"
+            ]
+        }
+    }
+}
