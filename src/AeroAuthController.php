@@ -36,6 +36,7 @@ class AeroAuthController extends Controller
 
         Mail::to($email)->queue(new SendToken(Str::uuid(4)));
 
+        return response()->redirectTo(route('home'));
 
     }
 }
