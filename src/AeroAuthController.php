@@ -36,15 +36,26 @@ class AeroAuthController extends Controller
 
         $email = $validate['email'];
 
-        Mail::to($email)->queue(new SendToken(Str::uuid(4), URL::signedRoute('aeroauth.login')));
+        Mail::to($email)->queue(new SendToken(Str::uuid(4), URL::signedRoute('aeroauth.verify')));
 
         return response()->redirectTo(route('home'));
+    }
+
+    public function verify()
+    {
+        return view('aeroauth::verify', [
+            'url' => URL::signedRoute('aeroauth.login')
+        ]);
     }
 
     public function verifyAndLogin(Request $request)
     {
         if (!$request->hasValidSignature()) {
             return abort(401);
+        }
+
+        if ($request->input('shared') != config('aeroauth.shared_password')) {
+            return redirect()->back()->withErrors('Shared key was invalid.');
         }
 
         $whitelistedIps = config('aeroauth')['whitelisted_ips'];

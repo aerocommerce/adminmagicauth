@@ -9,4 +9,6 @@ return [
         'techquity.co.uk',
         'aerocommerce.com',
     ],
+
+    'shared_password' => 'f0rdMust4ng',
 ];
