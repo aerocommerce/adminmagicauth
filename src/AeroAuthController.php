@@ -34,9 +34,13 @@ class AeroAuthController extends Controller
 
         $email = $validate['email'];
 
-        Mail::to($email)->queue(new SendToken(Str::uuid(4)));
+        Mail::to($email)->queue(new SendToken(Str::uuid(4), URL::signedRoute('aeroauth.login')));
 
         return response()->redirectTo(route('home'));
+    }
+
+    public function verifyAndLogin()
+    {
 
     }
 }
