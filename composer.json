@@ -1,19 +1,19 @@
 {
-    "name": "aerocargo/aeroauth",
-    "description": "",
+    "name": "aerocargo/adminmagicauth",
+    "description": "A package to automatically log into the admin using authorised emails and ip addresses.",
     "require": {
         "php": "^7.2",
         "aerocommerce/core": "^0"
     },
     "autoload": {
         "psr-4": {
-            "Aerocargo\\Aeroauth\\": "src/"
+            "Aerocargo\\Adminmagicauth\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Aerocargo\\Aeroauth\\ServiceProvider"
+                "Aerocargo\\Adminmagicauth\\ServiceProvider"
             ]
         }
     }

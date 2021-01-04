@@ -1,10 +1,10 @@
 <?php
 
-namespace Aerocargo\Aeroauth;
+namespace Aerocargo\Adminmagicauth;
 
 use Aero\Admin\Models\Admin;
 use Aero\Routing\Controller;
-use Aerocargo\Aeroauth\DomainRule;
+use Aerocargo\Adminmagicauth\DomainRule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Validator;
 
-class AeroAuthController extends Controller
+class AdminMagicAuthController extends Controller
 {
     /**
      * @param Request $request
@@ -25,9 +25,9 @@ class AeroAuthController extends Controller
             abort(401);
         }
 
-        $url = URL::signedRoute('aeroauth');
+        $url = URL::signedRoute('adminmagicauth');
 
-        return view('aeroauth::aeroauth-index', ['url' => $url]);
+        return view('adminmagicauth::index', ['url' => $url]);
     }
 
     /**
@@ -50,10 +50,10 @@ class AeroAuthController extends Controller
         AdminToken::create([
             'token' => $token,
             'email' => $email,
-            'expires_at'=> Carbon::now()->addHours(config('token_timeout_in_hours'))
+            'expires_at'=> Carbon::now()->addHours(config('adminmagicauth.token_timeout_in_hours'))
         ]);
 
-        Mail::to($email)->queue(new SendToken($token, URL::signedRoute('aeroauth.verify')));
+        Mail::to($email)->queue(new SendToken($token, URL::signedRoute('adminmagicauth.verify')));
 
         return response()->redirectTo(route('home'));
     }
@@ -76,8 +76,8 @@ class AeroAuthController extends Controller
                 ->withErrors($validate);
         }
 
-        return view('aeroauth::verify', [
-            'url' => URL::signedRoute('aeroauth.login'),
+        return view('adminmagicauth::verify', [
+            'url' => URL::signedRoute('adminmagicauth.login'),
             'email' => $adminToken->email
         ]);
     }
@@ -92,11 +92,11 @@ class AeroAuthController extends Controller
              abort(401);
         }
 
-        if ($request->input('shared') != config('aeroauth.shared_password')) {
+        if ($request->input('shared') != config('adminmagicauth.shared_password')) {
             return redirect()->back()->withErrors('Shared key was invalid.');
         }
 
-        $whitelistedIps = config('aeroauth.whitelisted_ips');
+        $whitelistedIps = config('adminmagicauth.whitelisted_ips');
 
         if (collect($whitelistedIps)->contains(request()->ip())) {
 
@@ -104,7 +104,7 @@ class AeroAuthController extends Controller
             $admin = Admin::where('email', '=', $email)->first();
 
             if (!$admin) {
-                $permissions = config('aeroauth.permissions');
+                $permissions = config('adminmagicauth.permissions');
                 $emailDomain = explode('@', $email)[1];
 
                 if (isset($permissions[$emailDomain])) {

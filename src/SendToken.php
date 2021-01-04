@@ -1,6 +1,6 @@
 <?php
 
-namespace Aerocargo\Aeroauth;
+namespace Aerocargo\Adminmagicauth;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -33,7 +33,7 @@ class SendToken extends Mailable
      */
     public function build()
     {
-        return $this->view('aeroauth::emails.send-token', [
+        return $this->view('adminmagicauth::emails.send', [
             'token' => $this->token,
             'url' => $this->url . '&token='. $this->token
         ]);

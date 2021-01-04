@@ -1,6 +1,6 @@
 <?php
 
-namespace Aerocargo\Aeroauth;
+namespace Aerocargo\Adminmagicauth;
 
 use Illuminate\Contracts\Validation\Rule;
 
@@ -16,7 +16,7 @@ class DomainRule implements Rule
     public function passes($attribute, $value)
     {
 
-        $whitelistedDomains = config('aeroauth')['whitelisted_domains'];
+        $whitelistedDomains = config('adminmagicauth')['whitelisted_domains'];
 
         $emailDomain = explode('@', $value)[1];
 

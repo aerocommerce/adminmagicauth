@@ -1,6 +1,6 @@
 <?php
 
-namespace Aerocargo\Aeroauth;
+namespace Aerocargo\Adminmagicauth;
 
 use Aero\Common\Models\Model;
 

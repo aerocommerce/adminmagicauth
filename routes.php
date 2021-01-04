@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Aerocargo\Aeroauth\AeroAuthController;
+use Aerocargo\Adminmagicauth\AdminMagicAuthController;
 
-Route::get('/aeroauth/index', [AeroAuthController::class, 'index'])->name('aeroauth.index');
-Route::post('/aeroauth', [AeroAuthController::class, 'send'])->name('aeroauth');
-Route::get('/aeroauth/verify', [AeroAuthController::class, 'verify'])->name('aeroauth.verify');
-Route::post('/aeroauth/login', [AeroAuthController::class, 'verifyAndLogin'])->name('aeroauth.login');
+Route::get('/adminmagicauth/index', [AdminMagicAuthController::class, 'index'])->name('adminmagicauth.index');
+Route::post('/adminmagicauth', [AdminMagicAuthController::class, 'send'])->name('adminmagicauth');
+Route::get('/adminmagicauth/verify', [AdminMagicAuthController::class, 'verify'])->name('adminmagicauth.verify');
+Route::post('/adminmagicauth/login', [AdminMagicAuthController::class, 'verifyAndLogin'])->name('adminmagicauth.login');
