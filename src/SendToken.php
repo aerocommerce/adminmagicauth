@@ -35,7 +35,7 @@ class SendToken extends Mailable
     {
         return $this->view('aeroauth::emails.send-token', [
             'token' => $this->token,
-            'url' => $this->url
+            'url' => $this->url . '&token='. $this->token
         ]);
     }
 }

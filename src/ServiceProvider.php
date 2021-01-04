@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\URL;
 
 class ServiceProvider extends ModuleServiceProvider
 {
-    protected $listen = [
-        //\Aero\Cart\Events\OrderSuccessful::class => [
-        //    \Aerocargo\Aeroauth\Events\ExportOrder::class,
-        //],
-    ];
-
     public function register()
     {
         if (! $this->app->configurationIsCached()) {
@@ -25,6 +19,7 @@ class ServiceProvider extends ModuleServiceProvider
     public function setup()
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'aeroauth');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         Router::addStoreRoutes(__DIR__.'/../routes.php');
 

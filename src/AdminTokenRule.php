@@ -2,9 +2,10 @@
 
 namespace Aerocargo\Aeroauth;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
-class Domain implements Rule
+class AdminTokenRule implements Rule
 {
     /**
      * Determine if the validation rule passes.
@@ -15,15 +16,18 @@ class Domain implements Rule
      */
     public function passes($attribute, $value)
     {
-        $whitelistedDomains = config('aeroauth')['whitelisted_domains'];
+        $adminToken = AdminToken::where(['token' => request()->input('token')])->first();
 
-        $emailDomain = explode('@', $value)[1];
 
-        if (collect($whitelistedDomains)->contains($emailDomain)) {
-            return true;
+        if (!$adminToken) {
+            return false;
         }
 
-        return false;
+        if ($adminToken->expires_at <= Carbon::now()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -33,6 +37,6 @@ class Domain implements Rule
      */
     public function message()
     {
-        return 'The :attribute must be a valid domain.';
+        return 'The :attribute has expired. Please try again.';
     }
 }
