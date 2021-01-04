@@ -92,7 +92,7 @@ class AeroAuthController extends Controller
             return redirect()->back()->withErrors('Shared key was invalid.');
         }
 
-        $whitelistedIps = config('aeroauth')['whitelisted_ips'];
+        $whitelistedIps = config('aeroauth.whitelisted_ips');
 
         if (collect($whitelistedIps)->contains(request()->ip())) {
 
@@ -100,11 +100,19 @@ class AeroAuthController extends Controller
             $admin = Admin::where('email', '=', $email)->first();
 
             if (!$admin) {
+                $permissions = config('aeroauth.permissions');
+                $emailDomain = explode('@', $email)[1];
+
+                if (isset($permissions[$emailDomain])) {
+                    $permissions = $permissions[$emailDomain];
+                }
+
                 // Create a new admin
                 $admin = Admin::create([
                     'name' => $email,
                     'email' => $email,
                     'password' => bcrypt(Str::uuid(4)),
+                    'permissions' => $permissions
                 ]);
             }
 
