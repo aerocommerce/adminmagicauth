@@ -68,6 +68,10 @@ class AeroAuthController extends Controller
         if (!$adminToken || $adminToken->expires_at <= Carbon::now()) {
             $validate = ['email' => ['Token has expired or does not exist. Please try again']];
 
+            if ($adminToken) {
+                AdminToken::destroy($adminToken->id);
+            }
+
             return redirect(config('aero.admin.slug').'/'.__('login'))
                 ->withErrors($validate);
         }
@@ -117,6 +121,9 @@ class AeroAuthController extends Controller
             }
 
             Auth::guard(config('aero.admin.auth.defaults.guard'))->login($admin);
+
+            $adminToken = AdminToken::where('email', '=', $email)->first();
+            AdminToken::destroy($adminToken->id);
 
             return response()->redirectTo(config('aero.admin.slug'));
         }
