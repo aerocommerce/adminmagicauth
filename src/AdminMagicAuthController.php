@@ -32,6 +32,15 @@ class AdminMagicAuthController extends Controller
 
     /**
      * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
+     */
+    public function status(Request $request)
+    {
+        return view('adminmagicauth::status');
+    }
+
+    /**
+     * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|void
      */
     public function send(Request $request)
@@ -55,7 +64,7 @@ class AdminMagicAuthController extends Controller
 
         Mail::to($email)->queue(new SendToken($token, URL::signedRoute('adminmagicauth.verify')));
 
-        return response()->redirectTo(route('home'));
+        return response()->redirectTo(route('adminmagicauth.status'));
     }
 
     /**
