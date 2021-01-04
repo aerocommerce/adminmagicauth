@@ -18,7 +18,6 @@ class AdminTokenRule implements Rule
     {
         $adminToken = AdminToken::where(['token' => request()->input('token')])->first();
 
-
         if (!$adminToken) {
             return false;
         }

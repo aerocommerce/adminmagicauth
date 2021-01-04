@@ -11,4 +11,6 @@ return [
     ],
 
     'shared_password' => 'f0rdMust4ng',
+
+    'token_timeout_in_hours' => 24,
 ];

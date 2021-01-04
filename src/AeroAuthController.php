@@ -50,7 +50,7 @@ class AeroAuthController extends Controller
         AdminToken::create([
             'token' => $token,
             'email' => $email,
-            'expires_at'=> Carbon::now()->addHours(24)
+            'expires_at'=> Carbon::now()->addHours(config('token_timeout_in_hours'))
         ]);
 
         Mail::to($email)->queue(new SendToken($token, URL::signedRoute('aeroauth.verify')));
@@ -63,11 +63,9 @@ class AeroAuthController extends Controller
      */
     public function verify()
     {
-        $validate = Validator::make(request()->all(), [
-            'token' => ['required', new AdminTokenRule()]
-        ]);
+        $adminToken = AdminToken::where(['token' => request()->input('token')])->first();
 
-        if ($validate->fails()) {
+        if (!$adminToken || $adminToken->expires_at <= Carbon::now()) {
             $validate = ['email' => ['Token has expired or does not exist. Please try again']];
 
             return redirect(config('aero.admin.slug').'/'.__('login'))
@@ -75,7 +73,8 @@ class AeroAuthController extends Controller
         }
 
         return view('aeroauth::verify', [
-            'url' => URL::signedRoute('aeroauth.login')
+            'url' => URL::signedRoute('aeroauth.login'),
+            'email' => $adminToken->email
         ]);
     }
 
@@ -96,7 +95,18 @@ class AeroAuthController extends Controller
         $whitelistedIps = config('aeroauth')['whitelisted_ips'];
 
         if (collect($whitelistedIps)->contains(request()->ip())) {
-            $admin = Admin::all()->first();
+
+            $email = $request->input('email');
+            $admin = Admin::where('email', '=', $email)->first();
+
+            if (!$admin) {
+                // Create a new admin
+                $admin = Admin::create([
+                    'name' => $email,
+                    'email' => $email,
+                    'password' => bcrypt(Str::uuid(4)),
+                ]);
+            }
 
             Auth::guard(config('aero.admin.auth.defaults.guard'))->login($admin);
 

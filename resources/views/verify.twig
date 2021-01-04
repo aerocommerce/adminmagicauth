@@ -9,6 +9,7 @@
             <div class="w-full lg:w-full bg-white rounded-lg shadow-lg lg:shadow-none p-5 border border-grey-light">
                 <form action="{{ url }}" method="post">
                     {{ csrf_field() }}
+                    <input type="hidden" name="email" value="{{ email }}" />
                     {% if session('message') %}
                         <div class="mb-4">
                             <span class="block w-full bg-white border-2 border-green text-green font-bold my-2 p-3 rounded-lg text-center lg:shadow-md" role="alert">
