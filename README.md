@@ -25,6 +25,12 @@ order to make the changes.
 php artisan vendor:publish --tag=config --provider='Aerocargo\Adminmagicauth'
 ```
 
+Finally make sure to run the migrations.
+
+```shell
+php artisan migrate
+```
+
 ### Usage
 
 Usage is simple. If you followed the install steps above, you should have an ```adminmagicauth.php```
