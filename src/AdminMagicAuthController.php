@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Validator;
 
+/**
+ * Class AdminMagicAuthController
+ * @package Aerocargo\Adminmagicauth
+ */
 class AdminMagicAuthController extends Controller
 {
     /**

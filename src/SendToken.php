@@ -6,6 +6,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Class SendToken
+ * @package Aerocargo\Adminmagicauth
+ */
 class SendToken extends Mailable
 {
     use Queueable, SerializesModels;

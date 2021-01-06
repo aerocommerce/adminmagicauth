@@ -4,6 +4,10 @@ namespace Aerocargo\Adminmagicauth;
 
 use Illuminate\Contracts\Validation\Rule;
 
+/**
+ * Class DomainRule
+ * @package Aerocargo\Adminmagicauth
+ */
 class DomainRule implements Rule
 {
     /**

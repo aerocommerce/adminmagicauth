@@ -6,6 +6,10 @@ use Aero\Admin\AdminSlot;
 use Aero\Common\Providers\ModuleServiceProvider;
 use Illuminate\Routing\Router;
 
+/**
+ * Class ServiceProvider
+ * @package Aerocargo\Adminmagicauth
+ */
 class ServiceProvider extends ModuleServiceProvider
 {
     public function register()
