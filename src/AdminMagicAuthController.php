@@ -4,7 +4,6 @@ namespace Aerocargo\Adminmagicauth;
 
 use Aero\Admin\Models\Admin;
 use Aero\Routing\Controller;
-use Aerocargo\Adminmagicauth\DomainRule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
