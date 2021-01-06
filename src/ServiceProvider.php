@@ -2,6 +2,7 @@
 
 namespace Aerocargo\Adminmagicauth;
 
+use Aero\Admin\AdminPortal;
 use Aero\Common\Providers\ModuleServiceProvider;
 use Aero\Store\Pipelines\ContentForBody;
 use Illuminate\Routing\Router;
@@ -21,15 +22,17 @@ class ServiceProvider extends ModuleServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'adminmagicauth');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
+
         Router::addStoreRoutes(__DIR__.'/../routes.php');
 
-        $whitelistedIps = config('adminmagicauth.whitelisted_ips');
+        AdminPortal::inject('login.footer', function() {
+            $whitelistedIps = config('adminmagicauth.whitelisted_ips');
 
-        if (collect($whitelistedIps)->contains(request()->ip())) {
-            ContentForBody::extend(function (&$content)  {
-                $url = URL::signedRoute('adminmagicauth.index');
-                $content .= view('adminmagicauth::header', ['url' => $url])->render();
-            });
-        }
+            if (collect($whitelistedIps)->contains(request()->ip())) {
+                return view('adminmagicauth::button', ['url' => URL::signedRoute('adminmagicauth.index')]);
+            }
+        });
+
+
     }
 }
